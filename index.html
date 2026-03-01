@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>Advanced College Job Portal</title>
+</head>
+<body>
+<header>
+  <h1>Advanced Job Portal</h1>
+  <nav aria-label="Primary navigation">
+    <button id="btn-toggle-theme" aria-label="Toggle dark mode">🌙</button>
+    <button id="btn-login" aria-haspopup="dialog">Login</button>
+    <button id="btn-logout" hidden>Logout</button>
+    <a href="#jobs" tabindex="0">Jobs</a>
+    <a href="#my-applications" tabindex="0">My Applications</a>
+    <button id="btn-admin" hidden>Admin Panel</button>
+  </nav>
+</header>
+
+<main>
+  <!-- Search and filters -->
+  <section aria-label="Job Search and Filter" id="search-filter" class="search-filter" role="region">
+    <input id="search-input" type="text" placeholder="Search jobs (title, company...)" aria-label="Search jobs" />
+    <select id="filter-type" aria-label="Filter jobs by type">
+      <option value="all" selected>All types</option>
+      <option value="full-time">Full-time</option>
+      <option value="part-time">Part-time</option>
+      <option value="internship">Internship</option>
+      <option value="remote">Remote</option>
+    </select>
+    <select id="filter-location" aria-label="Filter jobs by location">
+      <option value="all" selected>All locations</option>
+      <option value="remote">Remote</option>
+      <option value="on-campus">On-campus</option>
+      <option value="city-center">City Center</option>
+    </select>
+    <select id="sort-by" aria-label="Sort job listings">
+      <option value="date-desc" selected>Newest</option>
+      <option value="date-asc">Oldest</option>
+      <option value="title-asc">Title A-Z</option>
+      <option value="title-desc">Title Z-A</option>
+    </select>
+    <button id="btn-clear-filters" aria-label="Clear filters and search">Clear</button>
+  </section>
+
+  <!-- Job listings -->
+  <section aria-label="Job Listings" id="jobs" class="job-listings" tabindex="0" role="region">
+    <!-- Jobs dynamically injected here -->
+  </section>
+
+  <!-- User applications -->
+  <section aria-label="My Applications" id="my-applications" role="region" hidden>
+    <h2>My Job Applications</h2>
+    <div id="applications-list">
+      <!-- Applications dynamically inserted here -->
+    </div>
+  </section>
+
+  <!-- Admin panel (hidden until login as admin) -->
+  <section aria-label="Admin Panel" id="admin-panel" role="region" hidden>
+    <h2>Admin Panel - Manage Job Postings</h2>
+    <form id="admin-job-form" novalidate>
+      <input type="hidden" id="admin-job-id" />
+      <label for="admin-job-title">Job Title *</label>
+      <input type="text" id="admin-job-title" required placeholder="e.g. Software Engineer" />
+      <label for="admin-job-company">Company *</label>
+      <input type="text" id="admin-job-company" required placeholder="e.g. Tech Corp." />
+      <label for="admin-job-location">Location *</label>
+      <select id="admin-job-location" required>
+        <option value="" disabled selected>Select location</option>
+        <option value="remote">Remote</option>
+        <option value="on-campus">On-campus</option>
+        <option value="city-center">City Center</option>
+      </select>
+      <label for="admin-job-type">Job Type *</label>
+      <select id="admin-job-type" required>
+        <option value="" disabled selected>Select type</option>
+        <option value="full-time">Full-time</option>
+        <option value="part-time">Part-time</option>
+        <option value="internship">Internship</option>
+        <option value="remote">Remote</option>
+      </select>
+      <label for="admin-job-description">Description *</label>
+      <textarea id="admin-job-description" required placeholder="Enter job description"></textarea>
+      <button type="submit">Save Job</button>
+      <button type="button" id="btn-cancel-edit">Cancel</button>
+    </form>
+    <hr />
+    <h3>Existing Jobs</h3>
+    <div id="admin-job-list">
+      <!-- Admin job list -->
+    </div>
+  </section>
+</main>
+
+<footer>
+  &copy; 2024 Advanced College Job Portal | Developed by Students
+</footer>
+
+<!-- Job detail & application modal -->
+<div id="job-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="job-modal-title" aria-describedby="job-modal-desc">
+  <div class="modal" tabindex="-1">
+    <button class="modal-close" id="modal-close" aria-label="Close">&times;</button>
+    <h2 id="job-modal-title"></h2>
+    <p><strong>Company:</strong> <span id="job-modal-company"></span></p>
+    <p><strong>Location:</strong> <span id="job-modal-location"></span></p>
+    <p><strong>Type:</strong> <span id="job-modal-type"></span></p>
+    <p id="job-modal-desc"></p>
+    <button id="btn-apply-job" class="btn">Apply for this job</button>
+  </div>
+</div>
+
+<!-- Application form modal -->
+<div id="apply-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="apply-modal-title" aria-describedby="apply-modal-desc">
+  <div class="modal" tabindex="-1">
+    <button class="modal-close" id="apply-modal-close" aria-label="Close">&times;</button>
+    <h2 id="apply-modal-title">Apply for Job</h2>
+    <p id="apply-modal-desc">Fill out the form below to submit your application.</p>
+    <form id="application-form" novalidate>
+      <label for="applicant-name">Full Name *</label>
+      <input type="text" id="applicant-name" name="name" required aria-required="true" placeholder="Your full name" />
+      <label for="applicant-email">Email Address *</label>
+      <input type="email" id="applicant-email" name="email" required aria-required="true" placeholder="your.email@example.com" />
+      <label for="applicant-message">Message</label>
+      <textarea id="applicant-message" name="message" placeholder="Why are you a good fit?"></textarea>
+      <label for="applicant-resume">Resume (PDF, DOC, DOCX)</label>
+      <input type="file" id="applicant-resume" name="resume" accept=".pdf,.doc,.docx" />
+      <button type="submit">Submit Application</button>
+    </form>
+  </div>
+</div>
+
+<!-- Login modal -->
+<div id="login-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="login-modal-title" aria-describedby="login-modal-desc">
+  <div class="modal" tabindex="-1">
+    <button class="modal-close" id="login-modal-close" aria-label="Close">&times;</button>
+    <h2 id="login-modal-title">User Login</h2>
+    <p id="login-modal-desc">Enter your credentials.</p>
+    <form id="login-form" novalidate>
+      <label for="login-username">Username *</label>
+      <input type="text" id="login-username" name="username" required placeholder="Username" autocomplete="username" />
+      <label for="login-password">Password *</label>
+      <input type="password" id="login-password" name="password" required placeholder="Password" autocomplete="current-password" />
+      <button type="submit">Login</button>
+    </form>
+  </div>
+</div>
+
+<!-- Toast notification -->
+<div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true"></div>
